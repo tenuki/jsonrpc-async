@@ -247,7 +247,7 @@ async def test_calls(test_client):
 
     async def handler3(request):
         request_message = await request.json()
-        assert request_message["params"] == {'foo': 'bar'}
+        assert request_message["params"] == [{'foo': 'bar'}]
         return aiohttp.web.Response(
             text='{"jsonrpc": "2.0", "result": null}',
             content_type='application/json')
@@ -259,7 +259,6 @@ async def test_calls(test_client):
 
     client = await test_client(create_app)
     server = Server('/', client)
-
     await server.foobar({'foo': 'bar'})
 
 
