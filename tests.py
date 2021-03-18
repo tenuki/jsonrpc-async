@@ -7,6 +7,7 @@ import aiohttp
 import aiohttp.web
 import aiohttp.test_utils
 
+
 from jsonrpc_async import Server, ProtocolError, TransportError
 from jsonrpc_async.jsonrpc import Request, Batch
 
@@ -244,7 +245,7 @@ async def test_calls(test_client):
 
     async def handler3(request):
         request_message = await request.json()
-        assert request_message["params"] == [{'foo': 'bar'}]
+        assert request_message["params"] == {'foo': 'bar'}
         return aiohttp.web.Response(
             text='{"jsonrpc": "2.0", "result": null}',
             content_type='application/json')
@@ -423,5 +424,5 @@ async def test_no_json_header(test_client):
     client = await test_client(create_app)
     server = Server('/', client)
     result = await server.send_message(
-        jsonrpc_base.Request('net_version', params=[], msg_id=1))
+        Request('net_version', params=[], msg_id=1))
     assert result=='31'
